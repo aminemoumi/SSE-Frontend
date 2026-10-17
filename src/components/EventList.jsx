@@ -1,8 +1,9 @@
 // Import necessary hooks from 'react', 'axios' for making HTTP requests, and the EventCard component for displaying individual events.
 // Importation des hooks nécessaires de 'react', 'axios' pour effectuer des requêtes HTTP, et du composant EventCard pour afficher les événements individuels.
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import EventCard from './EventCard';
+import EventModal from './EventModal';
 
 // Define the EventList functional component to display a list of events.
 // Définition du composant fonctionnel EventList pour afficher une liste d'événements.
@@ -13,17 +14,12 @@ function EventList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   // UseEffect hook to fetch events data from the API on component mount.
   // Hook useEffect pour récupérer les données des événements depuis l'API lors du montage du composant.
   useEffect(() => {
-    const authToken = localStorage.getItem('authToken');
-
-    axios.get('http://localhost:4000/api/events', {
-      headers: {
-        Authorization: `Bearer ${authToken}`
-      }
-    })
+    api.get('/events')
     .then((response) => {
       setEvents(response.data.events);
       setLoading(false);
@@ -44,12 +40,7 @@ function EventList() {
   // Function to handle the deletion of an event using its ID.
   // Fonction pour gérer la suppression d'un événement à l'aide de son ID.
   const handleDeleteEvent = (eventId) => {
-    const authToken = localStorage.getItem('authToken');
-    axios.delete(`http://localhost:4000/api/events/${eventId}`, {
-      headers: {
-        Authorization: `Bearer ${authToken}`
-      }
-    })
+    api.delete(`/events/${eventId}`)
     .then(() => {
       // Update the state to reflect the removal of the event from the list.
       // Mise à jour de l'état pour refléter la suppression de l'événement de la liste.
@@ -58,6 +49,24 @@ function EventList() {
     .catch(error => {
       console.error('Erreur lors de la suppression de l\'événement:', error);
     });
+  };
+
+  // Function to handle event card clicks, setting the selected event.
+  // Fonction pour gérer les clics sur les cartes d'événements, définissant l'événement sélectionné.
+  const handleEventClick = (selectedEvent) => {
+    console.log('Event selected:', selectedEvent.site_name);
+    setSelectedEvent(selectedEvent);
+  };
+
+  // Function to close the modal, resetting the selected event to null.
+  // Fonction pour fermer la modale, réinitialisant l'événement sélectionné à null.
+  const handleCloseModal = () => setSelectedEvent(null);
+
+  // Function to handle event updates, updating the event list with the updated event data.
+  // Fonction pour gérer les mises à jour des événements, en mettant à jour la liste des événements avec les données de l'événement mis à jour.
+  const handleUpdateEvent = updatedEvent => {
+    setEvents(events.map(event => event.id === updatedEvent.id ? updatedEvent : event));
+    setSelectedEvent(null);
   };
 
   // Display loading message while data is being fetched.
@@ -92,10 +101,19 @@ function EventList() {
         <EventCard
           key={eventData.id}
           event={eventData}
-          eventOrigin={eventData.event_origin.title}
+          eventOrigin={eventData.event_origin?.title || 'Origine inconnue'}
           onDelete={handleDeleteEvent}
+          onEdit={handleEventClick}
         />
       ))}
+      {selectedEvent && (
+        <EventModal
+          event={selectedEvent}
+          isOpen={!!selectedEvent}
+          onClose={handleCloseModal}
+          onUpdate={handleUpdateEvent}
+        />
+      )}
     </div>
   </section>
   

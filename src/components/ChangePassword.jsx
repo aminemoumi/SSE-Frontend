@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'; // Importing necessary hooks
 import { useParams } from 'react-router-dom'; // Importing useParams hook
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook
-import axios from 'axios'; // Importing Axios for making HTTP requests
+import api from '../utils/api'; // Importing api instance
 import Logo from '../assets/logo.jpg'; // Importing logo image
 
 function ChangePassword() {
@@ -37,7 +37,7 @@ function ChangePassword() {
     try {
       // Send password change request to the backend
       // Envoyer la demande de changement de mot de passe au backend
-      const response = await axios.post(`http://localhost:4000/api/change-password/${id}`, {
+      const response = await api.post(`/change-password/${id}`, {
         password,
       });
       

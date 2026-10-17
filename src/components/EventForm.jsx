@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const EventForm = () => {
   const [event, setEvent] = useState({
@@ -21,17 +21,13 @@ const EventForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const authToken = localStorage.getItem('authToken');
 
     try {
-      const response = await axios.post('http://localhost:4000/api/events', {
+      const response = await api.post('/events', {
         ...event,
-      }, {
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
       });
       console.log('Réponse du serveur:', response.data);
+      window.alert('Événement créé avec succès !');
     } catch (error) {
       console.error('Erreur lors de la soumission:', error);
     }

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import '../styles/LoginForm.css';
@@ -35,7 +35,7 @@ function LoginForm() {
     try {
       // Make a POST request to the login API with the email and password.
       // Effectue une requête POST à l'API de connexion avec l'email et le mot de passe.
-      const response = await axios.post('http://localhost:4000/api/login', { email, password });
+      const response = await api.post('/login', { email, password });
 
       // Destructure the response data to get the message, authToken, and userId.
       // Déstructure les données de réponse pour obtenir le message, authToken et userId.

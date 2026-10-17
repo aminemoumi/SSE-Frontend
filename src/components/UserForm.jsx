@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 
 
@@ -29,17 +29,10 @@ const UserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const authToken = localStorage.getItem('authToken');
-   // const userRole = localStorage.getItem('userRole');
-    console.log(authToken)
     try {
-      const response = await axios.post('http://localhost:4000/api/users', user, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-        }
-      });
+      const response = await api.post('/users', user);
       console.log('Réponse du serveur :', response.data);
-     
+      window.alert('Utilisateur créé avec succès !');
     } catch (error) {
       console.error('Il y a eu un problème avec la requête:', error);
     }

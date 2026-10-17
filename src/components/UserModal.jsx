@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import PropTypes from 'prop-types';
 
 // Define the UserModal functional component with destructured props.
@@ -29,11 +29,14 @@ function UserModal({ user, isOpen, onClose, onUpdate }) {
   // Function to handle the save action, making a PATCH request to update the user data.
   // Fonction pour gérer l'action de sauvegarde, effectuant une requête PATCH pour mettre à jour les données de l'utilisateur.
   const handleSave = async () => {
-    const authToken = localStorage.getItem('authToken');
+    console.log('Tentative de mise à jour utilisateur ID:', editableUser.id);
+    
+    // Exclure le mot de passe du payload pour la sécurité
+    const { password, ...userDataToSend } = editableUser;
+    console.log('Données envoyées:', userDataToSend);
+    
     try {
-      const response = await axios.patch(`http://localhost:4000/api/users/${editableUser.id}`, editableUser, {
-        headers: { Authorization: `Bearer ${authToken}` }
-      });
+      const response = await api.patch(`/users/${editableUser.id}`, userDataToSend);
       onUpdate(response.data);
       console.log('Les modifications ont été enregistrées avec succès dans la base de données.');
       onClose();

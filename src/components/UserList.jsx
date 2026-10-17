@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import UserCard from './UserCard';
 import UserModal from './UserModal';
 
@@ -15,10 +15,7 @@ function UserList() {
   //  useEffect hook to fetch user data from an API on component mount.
   //  Hook useEffect pour récupérer les données des utilisateurs depuis une API lors du montage du composant.
   useEffect(() => {
-    const authToken = localStorage.getItem('authToken');
-    axios.get('http://localhost:4000/api/users', {
-      headers: { Authorization: `Bearer ${authToken}` }
-    })
+    api.get('/users')
     .then(response => {
       setUsers(response.data);
       setLoading(false);
@@ -57,10 +54,8 @@ function UserList() {
   //  Function to handle user deletion, making a DELETE request to the API and updating the state to remove the user.
   //  Fonction pour gérer la suppression des utilisateurs, effectuant une requête DELETE à l'API et mettant à jour l'état pour supprimer l'utilisateur.
   const handleDeleteUser = (userId) => {
-    const authToken = localStorage.getItem('authToken');
-    axios.delete(`http://localhost:4000/api/users/${userId}`, {
-      headers: { Authorization: `Bearer ${authToken}` }
-    })
+    console.log('Tentative de suppression utilisateur ID:', userId);
+    api.delete(`/users/${userId}`)
     .then(() => {
       setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
     })

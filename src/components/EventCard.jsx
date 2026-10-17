@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function EventCard({ event, onDelete }) {
+function EventCard({ event, onDelete, onEdit }) {
   const handleDelete = (eventId) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this event?");
     if (isConfirmed) {
@@ -27,7 +27,12 @@ function EventCard({ event, onDelete }) {
       </h4>
 
       <footer className="pt-5 pb-2 flex justify-center space-x-4">
-        <button className="w-36 h-10 font-semibold rounded-md bg-indigo-100 hover:scale-90 duration-500">🔎 : par ici !</button>
+        <button 
+          className="w-36 h-10 font-semibold rounded-md bg-indigo-100 hover:scale-90 duration-500"
+          onClick={() => onEdit(event)}
+        >
+          🔎 : par ici !
+        </button>
         <button
           className="w-36 h-10 font-semibold rounded-md bg-indigo-100 hover:scale-90 duration-500"
           onClick={() => handleDelete(event.id)}
@@ -47,6 +52,7 @@ EventCard.propTypes = {
     site_number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default EventCard;
