@@ -54,13 +54,23 @@ function UserList() {
   //  Function to handle user deletion, making a DELETE request to the API and updating the state to remove the user.
   //  Fonction pour gérer la suppression des utilisateurs, effectuant une requête DELETE à l'API et mettant à jour l'état pour supprimer l'utilisateur.
   const handleDeleteUser = (userId) => {
-    console.log('Tentative de suppression utilisateur ID:', userId);
     api.delete(`/users/${userId}`)
-    .then(() => {
+    .then((response) => {
+      if (response.data.deactivated && response.data.user) {
+        setUsers(currentUsers => currentUsers.map(user =>
+          user.id === userId ? response.data.user : user
+        ));
+        alert(response.data.message);
+        return;
+      }
+
       setUsers(currentUsers => currentUsers.filter(user => user.id !== userId));
+      alert(response.data.message || "Utilisateur supprimé.");
     })
     .catch(error => {
       console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+      const apiMessage = error.response?.data?.error || error.response?.data?.message;
+      alert(apiMessage || "Erreur lors de la suppression. Veuillez réessayer.");
     });
   };
 

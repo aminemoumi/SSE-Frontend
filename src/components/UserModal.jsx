@@ -29,12 +29,16 @@ function UserModal({ user, isOpen, onClose, onUpdate }) {
   // Function to handle the save action, making a PATCH request to update the user data.
   // Fonction pour gérer l'action de sauvegarde, effectuant une requête PATCH pour mettre à jour les données de l'utilisateur.
   const handleSave = async () => {
-    console.log('Tentative de mise à jour utilisateur ID:', editableUser.id);
-    
-    // Exclure le mot de passe du payload pour la sécurité
-    const { password, ...userDataToSend } = editableUser;
-    console.log('Données envoyées:', userDataToSend);
-    
+    const userDataToSend = {
+      firstname: editableUser.firstname,
+      lastname: editableUser.lastname,
+      email: editableUser.email,
+      enterprise: editableUser.enterprise,
+      position: editableUser.position,
+      process: editableUser.process,
+      roleId: editableUser.roleId ?? editableUser.role_id
+    };
+
     try {
       const response = await api.patch(`/users/${editableUser.id}`, userDataToSend);
       onUpdate(response.data);
@@ -80,7 +84,7 @@ function UserModal({ user, isOpen, onClose, onUpdate }) {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstname">Role</label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="role_id" type="text" name="role_id" value={editableUser.role_id || ''} onChange={handleChange} placeholder="Role" />
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="roleId" type="text" name="roleId" value={editableUser.roleId ?? editableUser.role_id ?? ''} onChange={handleChange} placeholder="Role" />
         </div>
         <div className="flex items-center justify-between">
           <button className="bg-transparent hover:bg-pink-900 text-gray-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" onClick={handleSave}>
@@ -103,7 +107,8 @@ UserModal.propTypes = {
     enterprise: PropTypes.string,
     position: PropTypes.string,
     process: PropTypes.string,
-    role_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    role_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    roleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   }).isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

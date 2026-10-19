@@ -5,7 +5,6 @@ import LogoutButton from '../components/LogoutButton';
 
 function NavBar() {
   const userRole = localStorage.getItem('userRole');
-  console.log(userRole);
 
   return (
     <aside className='w-1/4 h-screen flex flex-col justify-between fixed inset-y-0 left-0'> 

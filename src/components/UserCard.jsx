@@ -17,7 +17,6 @@ function UserCard({ user, onClick, onDelete }) {
     const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
     if (isConfirmed) {
       onDelete(userId);
-      alert("Utilisateur supprimé.");
     }
   };
 
@@ -49,7 +48,7 @@ function UserCard({ user, onClick, onDelete }) {
 <span className="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs font-medium text-gray-500 bg-gray-200 rounded dark:bg-gray-700 dark:text-gray-400 text-center"> {user.process}</span></h4>
 
 <h4 className="py-2 text-white font-bold flex items-center"><span className="flex-1 ms-3 whitespace-nowrap text-xs">Rôle</span>
-<span className="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs font-medium text-gray-500 bg-gray-200 rounded dark:bg-gray-700 dark:text-gray-400 text-center"> {user.role_id}</span></h4>
+<span className="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs font-medium text-gray-500 bg-gray-200 rounded dark:bg-gray-700 dark:text-gray-400 text-center"> {user.role?.title || user.roleId || user.role_id}</span></h4>
 
 
 <div className="pt-5 pb-2 flex justify-center space-x-4">
@@ -72,6 +71,10 @@ UserCard.propTypes = {
     position: PropTypes.string,
     process: PropTypes.string,
     role_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    roleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    role: PropTypes.shape({
+      title: PropTypes.string
+    }),
   }).isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,

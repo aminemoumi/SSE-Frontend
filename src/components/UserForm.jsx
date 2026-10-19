@@ -30,11 +30,11 @@ const UserForm = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post('/users', user);
-      console.log('Réponse du serveur :', response.data);
+      await api.post('/users', user);
       window.alert('Utilisateur créé avec succès !');
     } catch (error) {
-      console.error('Il y a eu un problème avec la requête:', error);
+      const apiMessage = error.response?.data?.error || error.response?.data?.message;
+      window.alert(apiMessage || "Erreur lors de la création de l'utilisateur.");
     }
   };
 
@@ -44,6 +44,8 @@ const UserForm = () => {
       <div key={key} className='w-full'>
         <input 
           name={key}
+          type={key === 'password' ? 'password' : 'text'}
+          autoComplete={key === 'password' ? 'new-password' : 'off'}
           value={user[key]}
           onChange={handleChange}
           placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
