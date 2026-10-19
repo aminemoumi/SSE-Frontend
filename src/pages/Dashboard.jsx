@@ -3,11 +3,9 @@ import EventList from "../components/EventList";
 function Dashboard() {
   return (
     <div className='flex min-h-screen'>
-      <nav className='w-1/4'>
-        <NavBar /> 
-      </nav>
-      <main className='w-3/4  overflow-auto bg-gray-300 '> 
-        <EventList /> 
+      <NavBar />
+      <main className='flex-1 lg:ml-72 overflow-auto bg-gray-300 pt-16 lg:pt-0'>
+        <EventList />
       </main>
     </div>
   );

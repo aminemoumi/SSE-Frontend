@@ -39,10 +39,10 @@ const UserForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center gap-y-4 w-full max-w-md mx-auto my-8'>
+    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center gap-y-4 w-full max-w-md mx-auto my-8 px-4 lg:px-0'>
     {Object.keys(user).map((key) => (
       <div key={key} className='w-full'>
-        <input 
+        <input
           name={key}
           type={key === 'password' ? 'password' : 'text'}
           autoComplete={key === 'password' ? 'new-password' : 'off'}
@@ -53,7 +53,7 @@ const UserForm = () => {
         />
       </div>
     ))}
-  
+
   <button type="submit"
   className="rounded-lg relative w-36 h-14 cursor-pointer flex items-center border border-pink-900 bg-pink-900 group hover:bg-pink-900 active:bg-pink-900 active:border-pink-900 mt-10"
 >
@@ -66,7 +66,7 @@ const UserForm = () => {
     className="absolute right-0 h-full w-10 rounded-lg bg-pink-900 flex items-center justify-center transform group-hover:translate-x-0 group-hover:w-full transition-all duration-300"
   >
     <svg
-      className="svg w-8 text-white" 
+      className="svg w-8 text-white"
       fill="none"
       height="24"
       stroke="currentColor"
@@ -83,7 +83,7 @@ const UserForm = () => {
   </span>
 </button>
   </form>
-  
+
   );
 };
 
