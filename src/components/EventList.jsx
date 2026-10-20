@@ -89,13 +89,15 @@ function EventList() {
 
   return (
     <section className='flex-1 ml-1/4 p-4 overflow-auto'> {/* Enlève 'overflow-auto' pour empêcher le défilement */}
-    <input
-      type="text"
-      placeholder="Rechercher par nom de site..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="mb-4 p-2 border rounded w-full" 
-    />
+    <div className="flex justify-center mb-4">
+      <input
+        type="text"
+        placeholder="Rechercher par nom de site..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="p-2 border rounded w-full lg:w-1/2 max-w-2xl"
+      />
+    </div>
     <div className="flex justify-center flex-wrap"> {/* Cette div va centrer les cartes d'événements */}
       {filteredEvents.map((eventData) => (
         <EventCard
@@ -116,7 +118,7 @@ function EventList() {
       )}
     </div>
   </section>
-  
+
   );
 }
 

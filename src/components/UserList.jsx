@@ -83,13 +83,15 @@ function UserList() {
   return (
 
 <section className='flex-1 ml-1/4 p-4 overflow-auto'>
-  <input
-    type="text"
-    placeholder="Rechercher par nom de famille..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="mb-4 p-2 border rounded w-full" 
-  />
+  <div className="flex justify-center mb-4">
+    <input
+      type="text"
+      placeholder="Rechercher par nom de famille..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="p-2 border rounded w-full lg:w-1/2 max-w-2xl"
+    />
+  </div>
   <div className="flex justify-center flex-wrap">
     {filteredUsers.map(user => (
       <UserCard
